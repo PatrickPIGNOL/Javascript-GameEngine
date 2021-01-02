@@ -1,0 +1,23 @@
+{
+  "name": "Javascript-RPG",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrickPIGNOL/Javascript-RPG.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PatrickPIGNOL/Javascript-RPG/issues"
+  },
+  "homepage": "https://github.com/PatrickPIGNOL/Javascript-RPG#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
