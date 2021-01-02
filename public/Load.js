@@ -74,37 +74,62 @@ function OnWindowLoad()
     document.body.style.margin = 0;
     document.body.style.padding = 0;
     document.body.style.overflow = 'hidden';
+    
     mLoadJavascriptFile
     (
-        "./GameEngine.js", 
+        "./Dimensions.js",
         ()=>
         {
             mLoadJavascriptFile
             (
-                "./Scene.js", 
+                "./GraphicComponent.js",
                 ()=>
                 {
                     mLoadJavascriptFile
                     (
-                        "./IntroScene.js", 
+                        "./Window.js",
                         ()=>
                         {
                             mLoadJavascriptFile
                             (
-                                "./MenuScene.js", 
+                                "./GameEngine.js", 
                                 ()=>
                                 {
-                                    const vFPS = 30;
-                                    const vCanvas = document.getElementById("canvas");
-                                    vCanvas.style.margin = 0;
-                                    vCanvas.style.padding = 0;
-                                    GameEngine.Instance.mStart(vBrowser, vCanvas, IntroScene.Instance);
+                                    mLoadJavascriptFile
+                                    (
+                                        "./Scene.js", 
+                                        ()=>
+                                        {
+                                            mLoadJavascriptFile
+                                            (
+                                                "./IntroScene.js", 
+                                                ()=>
+                                                {
+                                                    mLoadJavascriptFile
+                                                    (
+                                                        "./MenuScene.js", 
+                                                        ()=>
+                                                        {
+                                                            const vFPS = 30;
+                                                            const vCanvas = document.getElementById("canvas");
+
+                        
+                                                            vCanvas.style.margin = 0;
+                                                            vCanvas.style.padding = 0;
+                                                            GameEngine.Instance.mStart(vBrowser, vCanvas, IntroScene.Instance);
+                                                            GameEngine.Instance.Canvas.style.cursor = "none";
+                                                        }
+                                                    );
+                                                }
+                                            );            
+                                        }
+                                    );
                                 }
                             );
                         }
-                    );            
+                    );
                 }
             );
         }
-    );
+    )
 }

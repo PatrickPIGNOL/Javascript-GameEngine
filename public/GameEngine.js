@@ -194,7 +194,6 @@ class GameEngine
             (this.aBrowser & Browsers.Chrome)
         )
         {
-            //chrome & chromium expands width and height 1 px too far off the screen
             this.aCanvas.width = window.innerWidth - 1;
             this.aCanvas.height = window.innerHeight - 1;
         }

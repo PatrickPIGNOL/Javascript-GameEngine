@@ -1,3 +1,16 @@
+const MenuStatus = 
+{
+    FadeIn:0,
+    Wait:1,
+    FadeOut:2
+};
+
+const MenuImages =
+{
+    BackGround:0,
+    Mouse:1
+};
+
 class MenuScene extends Scene
 {
     static aInstance = null;
@@ -12,22 +25,33 @@ class MenuScene extends Scene
     constructor()
     {
         super();
-        this.aTimer = 0;
         this.aImages = new Array();
-        this.aPattern = new Array();
-        this.aClicked = false;
+        this.aAlpha = 0;
         this.aDown = false;
         this.aMouse = null;
-        this.aTouch = null;
-        this.aSquareColor = null;
+        this.aTimer = 0;
+        this.aStatus = MenuStatus.FadeIn;
+        this.aWindows = new Array();
     }
 
     mLoad()
     {
-        let vLoaded = false;
+        const vCanvas = GameEngine.Instance.Canvas;
+
+        this.aMouse = null;
+        this.aAlpha = 0;
+        this.aStatus = MenuStatus.FadeIn;
+        this.aImages = new Array();
+        this.aTimer = 0;
         const vBackGround = new Image();
-        vBackGround.src = "./MenuBackGround.png";
+        vBackGround.src = "./GUI/MenuBackGround.png";
         this.aImages.push(vBackGround);
+        const vMouse = new Image();
+        vMouse.src = "./Mouse.png"
+        this.aImages.push(vMouse);
+        this.aWindows = new Array();
+        const vMainMenuWindow = new Window((vCanvas.width-640)/2, (vCanvas.height-480)/2, 640, 480);
+        this.aWindows.push(vMainMenuWindow);
         /*            
             Langues
             Nouveau Jeu
@@ -45,27 +69,69 @@ class MenuScene extends Scene
     mUpdate(pDeltaTime)
     {
         this.aTimer += pDeltaTime;
-        if(this.aTimer > 10000)
+        switch(this.aStatus)
         {
-            this.aTimer = 0;
-            GameEngine.Instance.mChangeScene(MenuScene.Instance);
-            
-        }             
+            case MenuStatus.FadeIn:
+            {
+                this.aAlpha = this.aTimer / 3000;
+                if(this.aTimer > 3000)
+                {
+                    this.aTimer = 0;
+                    this.aStatus = MenuStatus.Wait;
+                    this.aWindows[0].mOpen();
+                    this.aWindows[0].mUpdate(pDeltaTime);                    
+                }   
+            }break;
+            case MenuStatus.Wait:
+            {   
+                this.aWindows[0].mUpdate(pDeltaTime);
+                if(this.aTimer > 59000)
+                {
+                    this.aWindows[0].mClose();
+                }
+                this.aAlpha = 1;
+                if(this.aTimer > 60000)
+                {
+                    this.aTimer = 0;                 
+                    this.aStatus = MenuStatus.FadeOut;
+                }
+            }break;
+            case MenuStatus.FadeOut:
+            {
+                this.aAlpha = 1 - this.aTimer / 3000;
+                if(this.aTimer > 3000)
+                {
+                    this.aTimer = 0;
+                    GameEngine.Instance.mChangeScene(IntroScene.Instance);
+                }
+            }break;
+        }
     }
 
     mDraw(pGraphicContext)
     {
         const vCanvas = GameEngine.Instance.Canvas;
-        
-        pGraphicContext.fillStyle = pGraphicContext.createPattern(this.aImages[0], "repeat");
-        //pGraphicContext.drawImage(this.aImages[0], 0, 0);
-        
-        pGraphicContext.fillStyle = this.aPattern[0];
+        pGraphicContext.globalAlpha = this.aAlpha;
+
+        pGraphicContext.fillStyle = pGraphicContext.createPattern(this.aImages[MenuImages.BackGround], "repeat");
         pGraphicContext.fillRect(0, 0, vCanvas.width, vCanvas.height);
 
         pGraphicContext.fillStyle = "rgba(0,255,0,1.0)";
-        pGraphicContext.fillText("Menu", 10, 10);
-        pGraphicContext.fillStyle = "rgba(255,255,255,1.0)";
+        pGraphicContext.fillText("Menu (" + Math.floor(60 - this.aTimer/1000) + ")", 10, 10);
+        pGraphicContext.fillStyle = "rgba(0,0,0,1.0)";
+        
+        pGraphicContext.globalAlpha = 1;
+        this.aWindows.forEach
+        (
+            vWindowFound=>
+            {
+                vWindowFound.mDraw(pGraphicContext);
+            }
+        )
+        if(this.aMouse)
+        {
+            pGraphicContext.drawImage(this.aImages[IntroImages.Mouse], this.aMouse.clientX, this.aMouse.clientY);
+        }
     }
 
     mOnClick(pClickEvent)
@@ -75,12 +141,10 @@ class MenuScene extends Scene
 
     mOnDoubleClick(pDoubleClickEvent)
     {
-
     }
 
     mOnKeyDown(pKeyDownEvent)
     {
-
     }
 
     mOnKeyUp(pKeyUpEvent)
