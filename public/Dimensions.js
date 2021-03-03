@@ -56,3 +56,6 @@ class Dimensions
         return new Dimensions(this.X / pDimensions.X, this.Y / pDimensions.Y);
     }
 }
+
+export { Dimensions };
+export default { Dimensions };

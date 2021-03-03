@@ -1,4 +1,8 @@
-class GameEngine
+
+import {EventProvider} from "./EventProvider.js";
+import {EBrowsers} from "./Loader.js";
+
+export class GameEngine extends EventProvider
 {
     static aInstance = null;
     static get Instance()
@@ -9,189 +13,107 @@ class GameEngine
         }
         return GameEngine.aInstance;
     }
+
     constructor()
     {
+        super();
         this.aScene = null;
         this.aBrowser = null;
         this.aCanvas = null;       
         this.aOldTime = performance.now();
         this.aLoopTimeOut = -1;
+        this.aTimer = 0;
+        this.aFPS = 0;
+        this.aFPSCounter = 0;
     }
 
-    mBrowser(pBrowser)
+    mOnClickEventHandler(pClickEvent)
     {
-        this.aBrowser = pBrowser;
+        this.aScene.mOnClickEvent(pClickEvent);
     }
 
-    mCanvas(pCanvas)
+    mOnDoubleClickEventHandler(pDoubleClickEvent)
     {
-        this.aCanvas = pCanvas;
-        this.aCanvas.addEventListener
-        (
-            "click",
-            pClickEvent =>
-            {
-                GameEngine.Instance.mOnClick(pClickEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            "dblclick",
-            pDoubleClickEvent => 
-            {
-                GameEngine.Instance.mOnDoubleClick(pDoubleClickEvent);
-            }
-        );
-
-        this.aCanvas.addEventListener
-        (
-            "keydown",
-            pKeyDownEvent =>
-            {
-                GameEngine.Instance.mOnKeyDown(pKeyDownEvent);
-            }
-        );
-
-        this.aCanvas.addEventListener
-        (
-            'keyup', 
-            pKeyUpEvent =>
-            {
-                GameEngine.Instance.mOnKeyUp(pKeyUpEvent);
-            }
-        );
-
-        this.aCanvas.addEventListener
-        (
-            "mousedown",
-            pMouseDownEvent =>
-            {
-                GameEngine.Instance.mOnMouseDown(pMouseDownEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            'mouseenter',
-            pMouseEnterEvent => 
-            {
-                GameEngine.Instance.mOnMouseEnter(pMouseEnterEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            'mouseleave',
-            pMouseLeaveEvent => 
-            {
-                GameEngine.Instance.mOnMouseLeave(pMouseLeaveEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            "mousemove",
-            pMouseMoveEvent =>
-            {       
-                GameEngine.Instance.mOnMouseMove(pMouseMoveEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            "mouseout",
-            pMouseOutEvent =>
-            {       
-                GameEngine.Instance.mOnMouseOut(pMouseOutEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            "mouseover",
-            pMouseOverEvent =>
-            {
-                GameEngine.Instance.mOnMouseOver(pMouseOverEvent);
-            }
-        );
-        this.aCanvas.addEventListener
-        (
-            "mouseup",
-            pMouseUpEvent =>
-            {
-                GameEngine.Instance.mOnMouseUp(pMouseUpEvent)
-            }
-        );   
-        this.aCanvas.addEventListener
-        (
-            "touchcancel",
-            pTouchCancelEvent =>
-            {
-                GameEngine.Instance.mOnTouchCancel(pTouchCancelEvent);
-            },
-            false
-        );
-        this.aCanvas.addEventListener
-        (
-            "touchend",
-            pTouchEndEvent =>
-            {
-                GameEngine.Instance.mOnTouchEnd(pTouchEndEvent);
-            },
-            false
-        );
-        this.aCanvas.addEventListener
-        (
-            "touchleave",
-            pTouchLeaveEvent =>
-            {
-                GameEngine.Instance.mOnTouchLeave(pTouchLeaveEvent);
-            },
-            false
-        );
-        this.aCanvas.addEventListener
-        (
-            "touchmove",
-            pTouchMoveEvent =>
-            {
-                GameEngine.Instance.mOnTouchMove(pTouchMoveEvent);
-            },
-            false
-        );
-        this.aCanvas.addEventListener
-        (
-            "touchstart",
-            pTouchStartEvent =>
-            {
-                GameEngine.Instance.mOnTouchStart(pTouchStartEvent);
-            },
-            false
-        );
-        this.aContext = this.aCanvas.getContext('2d');
+        this.aScene.mOnDoubleClickEvent(pDoubleClickEvent);
     }
 
-    mStart(pBrowser, pCanvas, pScene)
+    mOnKeyDownEventHandler(pKeyDownEvent)
     {
-        let vFPS = 30; //30 FPS max
-        this.mBrowser(pBrowser);
-        this.mCanvas(pCanvas);
-        this.mChangeScene(pScene);
-        window.onresize = ()=>
-        {
-            GameEngine.Instance.mOnResize();
-        };
-        window.setInterval
-        (
-            ()=>
-            {
-                GameEngine.Instance.mLoop();
-            }, 
-            1000/vFPS
-        );              
+        this.aScene.mOnKeyDownEvent(pKeyDownEvent);
     }
 
-    mUpdate(pDeltaTime)
+    mOnKeyUpEventHandler(pKeyUpEvent)
     {
+        this.aScene.mOnKeyUpEvent(pKeyUpEvent);
+    }
+
+    mOnMouseDownEventHandler(pMouseDownEvent)
+    {
+        this.aScene.mOnMouseDownEvent(pMouseDownEvent);
+    }
+
+    mOnMouseEnterEventHandler(pMouseEnterEvent)
+    {
+        this.aScene.mOnMouseEnterEvent(pMouseEnterEvent);
+    }
+    
+    mOnMouseLeaveEventHandler(pMouseLeaveEvent)
+    {
+        this.aScene.mOnMouseLeaveEvent(pMouseLeaveEvent);
+    }
+    
+    mOnMouseMoveEventHandler(pMouseMoveEvent)
+    {
+        this.aScene.mOnMouseMoveEvent(pMouseMoveEvent);
+    }
+
+    mOnMouseOutEventHandler(pMouseOutEvent)
+    {
+        this.aScene.mOnMouseMoveEvent(pMouseOutEvent);
+    }
+
+    mOnMouseOverEventHandler(pMouseOverEvent)
+    {
+        this.aScene.mOnMouseOverEvent(pMouseOverEvent);
+    }
+
+    mOnMouseUpEventHandler(pMouseUpEvent)
+    {
+        this.aScene.mOnMouseUpEvent(pMouseUpEvent);
+    }
+    
+    mOnTouchCancelEventHandler(pTouchCancelEvent)
+    {
+        this.aScene.mOnTouchCancelEvent(pTouchCancelEvent);
+    }
+
+    mOnTouchEndEventHandler(pTouchEndEvent)
+    {
+        this.aScene.mOnTouchEndEvent(pTouchEndEvent);
+    }
+    
+    mOnTouchLeaveEventHandler(pTouchLeaveEvent)
+    {
+        this.aScene.mOnTouchLeaveEvent(pTouchLeaveEvent);
+    }
+
+    mOnTouchMoveEventHandler(pTouchMoveEvent)
+    {
+        this.aScene.mOnTouchMoveEvent(pTouchMoveEvent);
+    }
+
+    mOnTouchStartEventHandler(pTouchStartEvent)
+    {
+        this.aScene.mOnTouchStartEvent(pTouchStartEvent);
+    }
+
+    mOnUpdateEventHandler(pCanvas, pDeltaTime)
+    {   
         if
         (
-            (this.aBrowser & Browsers.Chromium)
+            (this.aBrowser & EBrowsers.Chromium)
             ||
-            (this.aBrowser & Browsers.Chrome)
+            (this.aBrowser & EBrowsers.Chrome)
         )
         {
             this.aCanvas.width = window.innerWidth - 1;
@@ -202,20 +124,51 @@ class GameEngine
             this.aCanvas.width = window.innerWidth;
             this.aCanvas.height = window.innerHeight;
         }
-        this.aScene.mUpdate(pDeltaTime);
+        this.aScene.mOnUpdateEvent(pCanvas, pDeltaTime);
     }
-    
-    mDraw(pGraphicContext)
+
+    mOnDrawEventHandler(pCanvas, pGraphicContext)
     {
         if(pGraphicContext)
         {
             pGraphicContext.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
-            this.aScene.mDraw(pGraphicContext);
+            this.aScene.mOnDrawEvent(pCanvas, pGraphicContext);
         }
         else
         {
             document.write("Canvas are not supported");
         }        
+    }
+
+    mOnResizeEventHandler()
+    {
+        this.aScene.mOnResizeEvent()
+    }
+
+    mStart(pFPS, pBrowser, pCanvas, pScene)
+    {
+        this.Browser = pBrowser;
+        this.Canvas = pCanvas;
+        this.mChangeScene(pScene);
+        this.mOnLoadEvent();
+        window.onresize = () =>
+        {
+            GameEngine.Instance.mOnResizeEvent(GameEngine.Instance.Canvas);
+        };
+        window.setInterval
+        (
+            ()=>
+            {
+                window.requestAnimationFrame
+                (
+                    ()=>
+                    {
+                        GameEngine.Instance.mLoop();
+                    }
+                )
+            }, 
+            1000/pFPS
+        );
     }
     
     mLoop()
@@ -223,115 +176,189 @@ class GameEngine
         const vNewTime = performance.now();
         const vDeltaTime = vNewTime - this.aOldTime;
         this.aOldTime = vNewTime;
-        this.mUpdate(vDeltaTime);
-        this.mDraw(this.aCanvas.getContext('2d'));
-    }
-
-    mOnClick(pClickEvent)
-    {
-        this.aScene.mOnClick(pClickEvent);
-    }
-
-    mOnDoubleClick(pDoubleClickEvent)
-    {
-        this.aScene.mOnDoubleClick(pDoubleClickEvent);
-    }
-
-    mOnKeyDown(pKeyDownEvent)
-    {
-        this.aScene.mOnKeyDown(pKeyDownEvent);
-    }
-
-    mOnKeyUp(pKeyUpEvent)
-    {
-        this.aScene.mOnKeyUp(pKeyUpEvent);
-    }
-
-    mOnMouseDown(pMouseDownEvent)
-    {
-        this.aScene.mOnMouseDown(pMouseDownEvent);
-    }
-
-    mOnMouseEnter(pMouseEnterEvent)
-    {
-        this.aScene.mOnMouseEnter(pMouseEnterEvent);
-    }
-
-    mOnMouseLeave(pMouseLeaveEvent)
-    {
-        this.aScene.mOnMouseLeave(pMouseLeaveEvent);
-    }
-    
-    mOnMouseMove(pMouseMoveEvent)
-    {
-        this.aScene.mOnMouseMove(pMouseMoveEvent);
-    }
-
-    mOnMouseOut(pMouseOutEvent)
-    {
-        this.aScene.mOnMouseMove(pMouseOutEvent);
-    }
-
-    mOnMouseOver(pMouseOverEvent)
-    {
-        this.aScene.mOnMouseOver(pMouseOverEvent);
-    }
-
-    mOnMouseUp(pMouseUpEvent)
-    {
-        this.aScene.mOnMouseUp(pMouseUpEvent);
-    }
-    
-    mOnResize()
-    {
-        this.aScene.mOnResize()
-    }
-    
-    mOnTouchCancel(pTouchCancelEvent)
-    {
-        this.aScene.mOnTouchCancel(pTouchCancelEvent);
-    }
-
-    mOnTouchEnd(pTouchEndEvent)
-    {
-        this.aScene.mOnTouchEnd(pTouchEndEvent);
-    }
-    
-    mOnTouchLeave(pTouchLeaveEvent)
-    {
-        this.aScene.mOnTouchLeave(pTouchLeaveEvent);
-    }
-
-    mOnTouchMove(pTouchMoveEvent)
-    {
-        this.aScene.mOnTouchMove(pTouchMoveEvent);
-    }
-
-    mOnTouchStart(pTouchStartEvent)
-    {
-        this.aScene.mOnTouchMove(pTouchMoveEvent);
+        this.mOnUpdateEvent(this.aCanvas, vDeltaTime);
+        this.mOnDrawEvent(this.aCanvas, this.aCanvas.getContext('2d'));
+        this.aTimer += vDeltaTime;
+        this.aFPSCounter += 1;
+        if(this.aTimer > 1000)
+        {
+            this.aFPS = this.aFPSCounter;
+            this.aFPSCounter = 0;
+            this.aTimer = 0;
+        }
     }
     
     mChangeScene(pScene)
     {
         if(this.aScene)
         {
-            this.aScene.mUnLoad();
+            this.aScene.mOnUnLoadEvent();
         }
         this.aScene = pScene;
-        this.aScene.mLoad();
+        this.aScene.mOnLoadEvent();
+    }
+    
+    set Browser(pBrowser)
+    {
+        this.aBrowser = pBrowser;
+    }
+
+    get LoopTimeOut()
+    {
+        return this.aLoopTimeOut;
+    }
+
+    set LoopTimeOut(pLoopTimeout)
+    {
+        this.aLoopTimeOut = pLoopTimeout;
     }
 
     get Canvas()
     {
         return this.aCanvas;
     }
-    get LoopTimeOut()
+
+    set Canvas(pCanvas)
     {
-        return this.aLoopTimeOut;
-    }
-    set LoopTimeOut(pLoopTimeout)
-    {
-        this.aLoopTimeOut = pLoopTimeout;
+        this.aCanvas = pCanvas;
+        this.aCanvas.addEventListener
+        (
+            "click",
+            pClickEvent =>
+            {
+                GameEngine.Instance.mOnClickEvent(pClickEvent);
+            }
+        );
+        this.aCanvas.addEventListener
+        (
+            "dblclick",
+            pDoubleClickEvent => 
+            {
+                GameEngine.Instance.mOnDoubleClickEvent(pDoubleClickEvent);
+            }
+        );
+
+        this.aCanvas.addEventListener
+        (
+            "keydown",
+            pKeyDownEvent =>
+            {
+                GameEngine.Instance.mOnKeyDownEvent(pKeyDownEvent);
+            }
+        );
+
+        this.aCanvas.addEventListener
+        (
+            'keyup', 
+            pKeyUpEvent =>
+            {
+                GameEngine.Instance.mOnKeyUpEvent(pKeyUpEvent);
+            }
+        );
+
+        this.aCanvas.addEventListener
+        (
+            "mousedown",
+            pMouseDownEvent =>
+            {
+                GameEngine.Instance.mOnMouseDownEvent(pMouseDownEvent);
+            }
+        );
+        this.aCanvas.addEventListener
+        (
+            'mouseenter',
+            pMouseEnterEvent => 
+            {
+                GameEngine.Instance.mOnMouseEnterEvent(pMouseEnterEvent);
+            }
+        );
+        this.aCanvas.addEventListener
+        (
+            'mouseleave',
+            pMouseLeaveEvent => 
+            {
+                GameEngine.Instance.mOnMouseLeaveEvent(pMouseLeaveEvent);
+            },
+            false
+        );
+        this.aCanvas.addEventListener
+        (
+            "mousemove",
+            pMouseMoveEvent =>
+            {       
+                GameEngine.Instance.mOnMouseMoveEvent(pMouseMoveEvent);
+            }
+        );
+        this.aCanvas.addEventListener
+        (
+            "mouseout",
+            pMouseOutEvent =>
+            {       
+                GameEngine.Instance.mOnMouseOutEvent(pMouseOutEvent);
+            }
+        );
+        this.aCanvas.addEventListener
+        (
+            "mouseover",
+            pMouseOverEvent =>
+            {
+                GameEngine.Instance.mOnMouseOverEvent(pMouseOverEvent);
+            }
+        );
+        this.aCanvas.addEventListener
+        (
+            "mouseup",
+            pMouseUpEvent =>
+            {
+                GameEngine.Instance.mOnMouseUpEvent(pMouseUpEvent)
+            }
+        );   
+        this.aCanvas.addEventListener
+        (
+            "touchcancel",
+            pTouchCancelEvent =>
+            {
+                GameEngine.Instance.mOnTouchCancelEvent(pTouchCancelEvent);
+            },
+            false
+        );
+        this.aCanvas.addEventListener
+        (
+            "touchend",
+            pTouchEndEvent =>
+            {
+                GameEngine.Instance.mOnTouchEndEvent(pTouchEndEvent);
+            },
+            false
+        );
+        this.aCanvas.addEventListener
+        (
+            "touchleave",
+            pTouchLeaveEvent =>
+            {
+                GameEngine.Instance.mOnTouchLeaveEvent(pTouchLeaveEvent);
+            },
+            false
+        );
+        this.aCanvas.addEventListener
+        (
+            "touchmove",
+            pTouchMoveEvent =>
+            {
+                GameEngine.Instance.mOnTouchMoveEvent(pTouchMoveEvent);
+            },
+            false
+        );
+        this.aCanvas.addEventListener
+        (
+            "touchstart",
+            pTouchStartEvent =>
+            {
+                GameEngine.Instance.mOnTouchStartEvent(pTouchStartEvent);
+            },
+            false
+        );
     }
 }
+
+export default {GameEngine};
