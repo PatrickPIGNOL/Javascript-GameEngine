@@ -36,7 +36,7 @@ class MainMenuScene extends Scene
         this.aMouse = null;
         this.aTimer = 0;
         this.aStatus = EMainMenuStatus.Closed;
-        this.aMainMenuWindow = new MainMenuWindow(this, 0, 0, 200, 280);
+        this.aMainMenuWindow = new MainMenuWindow(this, 0, 0, 200, 235);
         this.mAddOnUpdateEventListener(this.aMainMenuWindow);
         this.mAddOnDrawEventListener(this.aMainMenuWindow);
         this.aMouse = Mouse.Instance;

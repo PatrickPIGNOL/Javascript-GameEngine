@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "javascript-obfuscator": "^2.9.4"
+    "express": "^4.17.1"
   }
 }

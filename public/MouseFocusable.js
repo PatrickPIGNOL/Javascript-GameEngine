@@ -1,46 +1,6 @@
 import {GraphicComponent} from "./GraphicComponent.js";
 import {DragDropEvent} from "./DragDropEvent.js"
-
-const MouseButtons = Object.freeze
-(
-    {
-        None:
-        {
-            Mask: 65535,
-            Value: 0
-        },
-        Button1:
-        {
-            Mask: 1,
-            Value: 1
-        },
-        Button2:
-        {
-            Mask: 2,
-            Value: 2
-        },
-        Button3:
-        {
-            Mask: 4,
-            Value: 4
-        },
-        Button4:
-        {
-            Mask: 8,
-            Value: 8
-        },
-        Button5:
-        {
-            Mask: 16,
-            Value: 16
-        },
-        Button6:
-        {
-            Mask: 32,
-            Value: 32
-        }
-    }
-);
+import {MouseButtons} from "./MouseButtons.js"
 
 class MouseFocusable extends GraphicComponent
 {
@@ -61,7 +21,14 @@ class MouseFocusable extends GraphicComponent
         this.aDragable = false;
         this.aDraged = false;
         this.aDragDropEvent = null;
-        this.aMouseFocusable = false;     
+		this.aMouseFocus = null;
+        this.aMouseFocusable = false;  
+		//Keyboard
+		/*
+		this.aKeyboardFocus;
+		this.aDefault = false;
+		this.aKeyboardFocusable = false;	
+		*/
     }
 
     get DragDropEvent()
@@ -184,7 +151,7 @@ class MouseFocusable extends GraphicComponent
     {
         return this.aMouseFocus;
     }
-    
+	
     get MouseFocusable()
     {
         return this.aMouseFocusable;
@@ -293,6 +260,46 @@ class MouseFocusable extends GraphicComponent
         }
         return this.aMouseFocus;
     }
+	
+	/*get KeyboardFocusable()
+	{
+		return this.aKeyboardFocusable;
+	}
+	
+	set KeyboardFocusable(pKeyboardFocusable)
+	{
+		this.aKeyboardFocusable = pKeyboardFocusable;
+	}*/
+	
+	get Default()
+	{
+		return this.aDefault;
+	}
+
+	set Default(pDefault)
+	{
+		if(pDefault)
+		{
+			if(this.Parent.KeyboardFocusable)
+			{
+				this.Parent.Default = false;
+			}
+			for(vChild in this.aComponents)
+			{
+				if(vChild.KeyboardFocusable)
+				{
+					if(vChild.Default)
+					{
+						vChild.Default = false;
+					}
+				}
+			}
+		}
+		if(this.KeyboardFocusable)
+		{
+			this.aDefault = pDefault;
+		}
+	}
 }
 
 export {MouseFocusable};

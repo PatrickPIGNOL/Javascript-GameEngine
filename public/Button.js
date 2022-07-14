@@ -26,7 +26,7 @@ export class Button extends MouseFocusable
         this.aText = pText;
         this.aTimer = 0;
         this.aTextSize = "14px";
-        this.aFont = "sherif";
+        this.aFont = EFonts.Sherif;
         this.aTextColor = "rgba(0, 0, 0, 1.0)";
     }
 
@@ -76,7 +76,8 @@ export class Button extends MouseFocusable
     }
 
     mOnDrawEventHandler(pCanvas, pGraphicContext)
-    {        
+    {       
+		let vImage;
         if(this.Visible)
         {
             pGraphicContext.globalAlpha = this.GlobalAlpha;
@@ -86,45 +87,51 @@ export class Button extends MouseFocusable
             pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.ButtonBackGround.Index], "repeat");
             pGraphicContext.fillRect(0, 0, this.Width, this.Height);
 
+			vImage = Loader.Images[EImage.West.Index];
             pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.West.Index], "repeat");
-            pGraphicContext.fillRect(0, 0, 8, this.Height);
+            pGraphicContext.fillRect(0, 0, vImage.width, this.Height);
 
+			vImage = Loader.Images[EImage.North.Index];
             pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.North.Index], "repeat");
-            pGraphicContext.fillRect(0, 0, this.Width, 8);
+            pGraphicContext.fillRect(0, 0, this.Width, vImage.height);
 
             pGraphicContext.restore();
 
             //--------
 
             pGraphicContext.save();
-            pGraphicContext.translate(this.AbsoluteX + this.Width - 7, this.AbsoluteY);
+			vImage = Loader.Images[EImage.East.Index];
+            pGraphicContext.translate(this.AbsoluteX + this.Width - vImage.width, this.AbsoluteY);
 
-            pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.East.Index], "repeat");
-            pGraphicContext.fillRect(0, 0, 8, this.Height);
-            
+            pGraphicContext.fillStyle = pGraphicContext.createPattern(vImage, "repeat");
+            pGraphicContext.fillRect(0, 0, vImage.width, this.Height);
             pGraphicContext.restore();
 
             //--------
 
             pGraphicContext.save();
-            pGraphicContext.translate(this.AbsoluteX, this.AbsoluteY + this.Height - 8);
+			vImage = Loader.Images[EImage.South.Index];
+            pGraphicContext.translate(this.AbsoluteX, this.AbsoluteY + this.Height - vImage.height);
 
-            pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.South.Index], "repeat");
-            pGraphicContext.fillRect(0, 0, this.Width, 8);
+            pGraphicContext.fillStyle = pGraphicContext.createPattern(vImage, "repeat");
+            pGraphicContext.fillRect(0, 0, this.Width, vImage.height);
             
             pGraphicContext.restore();
             
             //---------
-
+			
             pGraphicContext.drawImage(Loader.Images[EImage.CornerNW.Index], this.AbsoluteX, this.AbsoluteY);
-            pGraphicContext.drawImage(Loader.Images[EImage.CornerNE.Index], this.AbsoluteX + this.Width - 8, this.AbsoluteY);
-            pGraphicContext.drawImage(Loader.Images[EImage.CornerSE.Index], this.AbsoluteX + this.Width - 8, this.AbsoluteY + this.Height - 8);
-            pGraphicContext.drawImage(Loader.Images[EImage.CornerSW.Index], this.AbsoluteX, this.AbsoluteY + this.Height - 8);
+			vImage = Loader.Images[EImage.CornerNE.Index];
+            pGraphicContext.drawImage(vImage, this.AbsoluteX + this.Width - vImage.width, this.AbsoluteY);
+			vImage = Loader.Images[EImage.CornerSE.Index];
+            pGraphicContext.drawImage(vImage, this.AbsoluteX + this.Width - 8, this.AbsoluteY + this.Height - vImage.height);
+			vImage = Loader.Images[EImage.CornerSW.Index];
+            pGraphicContext.drawImage(vImage, this.AbsoluteX, this.AbsoluteY + this.Height - vImage.height);
 
             pGraphicContext.fillStyle = this.aTextColor;
 
             pGraphicContext.save();
-            pGraphicContext.font = this.TextSize + ' ' + this.aFont.Name;
+            pGraphicContext.font = `${this.TextSize} "${this.aFont.Name}"`;
             pGraphicContext.beginPath();
             pGraphicContext.rect(this.AbsoluteX, this.AbsoluteY, this.Width, this.Height);
             pGraphicContext.clip();

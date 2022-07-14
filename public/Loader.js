@@ -125,26 +125,36 @@ export class Loader
         if(pFontFiles && pFontFiles.length > 0)
         {
             const vFontFile = pFontFiles.shift();
-            const vFont = new FontFace(vFontFile.Name, `url(${vFontFile.FileName})`);
-            Loader.aFonts.push(vFont);
-
-            if(pFontFiles.length === 0)
-            {
-                if(pCallBack)
-                {
-                    vFont.load().then(pCallBack);
-                }
-            }
-            else
-            {
-                vFont.load().then
-                (
-                    ()=>
-                    {
-                        Loader.mLoadFonts(pFontFiles, pCallBack);
-                    }
-                )
-            }
+			if(vFontFile.FileName)
+			{
+				const vFont = new FontFace(vFontFile.Name, `url(${vFontFile.FileName})`);
+				Loader.aFonts.push(vFont);
+				document.fonts.add(vFont);
+				if(pFontFiles.length === 0)
+				{
+					if(pCallBack)
+					{
+						vFont.load().then
+						(
+							pCallBack
+						);
+					}
+				}
+				else
+				{
+					vFont.load().then
+					(
+						()=>
+						{
+							Loader.mLoadFonts(pFontFiles, pCallBack);
+						}
+					)
+				}
+			}
+			else
+			{
+				Loader.mLoadFonts(pFontFiles, pCallBack);
+			}
         }
     }
 
@@ -301,18 +311,24 @@ export const EImage = Object.freeze
 export const EFonts = Object.freeze
 (
     {
-        Buffied: 
-        {
-            Index: 0,
-            Name: "Buffied",
-            FileName: "./Fonts/Buffied.ttf"
-        },
+		Sherif:
+		{
+			Index: 0,
+			Name: "sherif",
+			FileName: null
+		},
         Celexa:
         {
             Index: 1,
             Name: "Celexa",
             FileName: "./Fonts/Celexa.ttf"
-        }
+        },
+        Buffied: 
+        {
+            Index: 2,
+            Name: "Buffied",
+            FileName: "./Fonts/Buffied.ttf"
+        },
     }
 )
 

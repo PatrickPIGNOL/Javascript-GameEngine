@@ -2,7 +2,7 @@
 import {WindowBase} from "./WindowBase.js";
 import {Button} from "./Button.js";
 import {MainMenuButton} from "./MainMenuButton.js";
-import {Loader, EImage} from "./Loader.js";
+import {Loader, EImage, EFonts} from "./Loader.js";
 import {Rectangle} from "./Rectangle.js";
 import {GameEngine} from "./GameEngine.js";
 import {LevelScene} from "./LevelScene.js";
@@ -41,19 +41,7 @@ class MainMenuWindow extends WindowBase
        			this.Parent.mVisible(false);
                 GameEngine.Instance.mChangeScene(LevelScene.Instance);
             };
-        this.aOptionsButton = new MainMenuButton(this, 10, 180, 180, 40,       "   Scores ");
-		this.aOptionsButton.mOnClickEventHandler = function (pEvent)
-            {
-                if(this.TextColor === "rgba(231, 212, 184, 1.0)")
-                {
-                    this.TextColor = "rgba(0, 255, 0, 1.0)";
-                }
-                else if(this.TextColor === "rgba(0, 255, 0, 1.0)")
-                {
-                    this.TextColor = "rgba(231, 212, 184, 1.0)";
-                }
-            };
-        this.aCreditsButton = new MainMenuButton(this, 10, 230, 180, 40,       "   Crédits ");
+        this.aCreditsButton = new MainMenuButton(this, 10, 180, 180, 40,       "   Crédits ");
 		this.aCreditsButton.mOnClickEventHandler = function (pEvent)
             {
                 if(this.TextColor === "rgba(231, 212, 184, 1.0)")
@@ -292,16 +280,17 @@ class MainMenuWindow extends WindowBase
             pGraphicContext.drawImage(Loader.Images[EImage.CornerSW.Index], this.AbsoluteX, this.AbsoluteY + this.Height - 8);
 
 			//----------
-/*
-			pGraphicContext.save();
-            pGraphicContext.font = this.TextSize + ' ' + this.aFont.Name;
-            pGraphicContext.beginPath();
-            pGraphicContext.rect(this.AbsoluteX, this.AbsoluteY, this.Width, this.Height);
-            pGraphicContext.clip();
+			if(this.aState === WindowState.Opened)
+			{
+				pGraphicContext.fillStyle = `rgba(255, 255, 255, 1.0)`;
 
-            pGraphicContext.fillText(this.aText, this.AbsoluteX, this.AbsoluteY + this.Height-10);
-            pGraphicContext.restore();
-*/
+				pGraphicContext.save();
+				pGraphicContext.font = '30px ' + EFonts.Celexa.Name;
+				pGraphicContext.fillText("Pen & Paper", this.AbsoluteX + 10, this.AbsoluteY + 40);
+				
+				pGraphicContext.fillText("Dungeons", this.AbsoluteX + 20, this.AbsoluteY + 80);
+				pGraphicContext.restore();
+			}
             pGraphicContext.globalAlpha = 1;
         }
     }

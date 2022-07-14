@@ -16,7 +16,7 @@ app.get
     "/", 
     (request, response) =>
     {
-        let vHTML = mHTMLHeader("Canvas");
+        let vHTML = mHTMLHeader("RPG");
         vHTML = vHTML + mHTMLFooter();
         response.send(vHTML);
     }
