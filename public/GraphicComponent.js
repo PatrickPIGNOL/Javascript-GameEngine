@@ -1,6 +1,5 @@
-
 import {EventProvider} from "./EventProvider.js";
-class GraphicComponent extends EventProvider
+export class GraphicComponent extends EventProvider
 {
     constructor()
     {
@@ -31,5 +30,4 @@ class GraphicComponent extends EventProvider
     }
 }
 
-export {GraphicComponent};
 export default {GraphicComponent};

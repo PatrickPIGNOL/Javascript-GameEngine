@@ -1,3 +1,5 @@
+import {EBrowsers} from "./EBrowsers.js"
+
 function mLoadJavascriptFile(pJavaScriptFile, pCallback)
 {
     const vJavaScriptFile = document.createElement("script");
@@ -10,53 +12,40 @@ function mLoadJavascriptFile(pJavaScriptFile, pCallback)
     document.body.appendChild(vJavaScriptFile);
 }
 
-const Browsers = 
-{
-    None: 0,
-    Opera: 1,
-    Firefox: 2,
-    Safari: 4,
-    IE: 8,
-    Edge: 16,
-    Chrome: 32,
-    Chromium: 64,
-    Blink: 128
-};
-
 function mBrowser()
 {    
     let vBrowser = 0;
     if((!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)
     {
-        vBrowser += Browsers.Opera;
+        vBrowser += EBrowsers.Opera;
     }
     if(typeof InstallTrigger !== 'undefined')
     {
-        vBrowser += Browsers.Firefox;
+        vBrowser += EBrowsers.Firefox;
     }
     if(/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification)))
     {
-        vBrowser += Browsers.Safari;
+        vBrowser += EBrowsers.Safari;
     }
     if(false || !!document.documentMode)
     {
-        vBrowser += Browsers.IE;
+        vBrowser += EBrowsers.IE;
     }
-    if(! (vBrowser & Browsers.IE) && !!window.StyleMedia)
+    if(! (vBrowser & EBrowsers.IE) && !!window.StyleMedia)
     {
-        vBrowser += Browsers.Edge;
+        vBrowser += EBrowsers.Edge;
     }
     if(!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime))
     {
-        vBrowser += Browsers.Chrome;
+        vBrowser += EBrowsers.Chrome;
     }
-    if((vBrowser & Browsers.Chrome) && (navigator.userAgent.indexOf("Edg") != -1))
+    if((vBrowser & EBrowsers.Chrome) && (navigator.userAgent.indexOf("Edg") != -1))
     {
-        vBrowser += Browsers.Chromium;
+        vBrowser += EBrowsers.Chromium;
     }
-    if((vBrowser & Browsers.Chrome) || (vBrowser & Browsers.Opera) && !!window.CSS)
+    if((vBrowser & EBrowsers.Chrome) || (vBrowser & EBrowsers.Opera) && !!window.CSS)
     {
-        vBrowser += Browsers.Blink;
+        vBrowser += EBrowsers.Blink;
     }
     return vBrowser;
 }

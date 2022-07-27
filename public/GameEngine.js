@@ -1,5 +1,5 @@
 import {EventProvider} from "./EventProvider.js";
-import {EBrowsers} from "./Loader.js";
+import {EBrowsers} from "./EBrowsers.js";
 
 export class GameEngine extends EventProvider
 {

@@ -1,4 +1,4 @@
-class Dimensions
+export class Dimensions
 {
     constructor(pX, pY)
     {
@@ -57,5 +57,4 @@ class Dimensions
     }
 }
 
-export { Dimensions };
 export default { Dimensions };

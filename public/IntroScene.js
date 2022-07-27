@@ -1,18 +1,12 @@
 import {Scene} from "./Scene.js";
 import {Mouse} from "./Mouse.js";
-import {Loader, EImage} from "./Loader.js";
+import {Loader} from "./Loader.js";
+import {EImages} from "./EImages.js"
 import {GameEngine} from "./GameEngine.js";
 import {MainMenuScene} from "./MainMenuScene.js";
-const IntroStatus = Object.freeze
-(
-    {
-        FadeIn:0,
-        Wait:1,
-        FadeOut:2
-    }
-);
+import {EIntroStatus} from "./EIntroStatus.js";
 
-class IntroScene extends Scene
+export class IntroScene extends Scene
 {
     static aInstance = null;
     static get Instance()
@@ -29,7 +23,7 @@ class IntroScene extends Scene
         super();
         this.aTimer = 0;
         this.aClicked = false;
-        this.aStatus = IntroStatus.FadeIn;
+        this.aStatus = EIntroStatus.FadeIn;
         this.aAlpha = 0;
         this.aMouse = Mouse.Instance;
         this.mAddOnAllEventListener(this.aMouse);
@@ -41,7 +35,7 @@ class IntroScene extends Scene
         document.body.style.cursor = "auto";
         this.aTimer = 0;
         this.aClicked = false;
-        this.aStatus = IntroStatus.FadeIn;
+        this.aStatus = EIntroStatus.FadeIn;
         this.aAlpha = 0;
     }
 
@@ -57,7 +51,7 @@ class IntroScene extends Scene
         this.aTimer += pDeltaTime;
         switch(this.aStatus)
         {
-            case IntroStatus.FadeIn:
+            case EIntroStatus.FadeIn:
             {
                 this.aAlpha = this.aTimer / 3000;
                 if(this.aTimer > 3000)
@@ -66,7 +60,7 @@ class IntroScene extends Scene
                     this.aStatus = IntroStatus.Wait;
                 }   
             }break;
-            case IntroStatus.Wait:
+            case EIntroStatus.Wait:
             {   
                 this.aAlpha = 1;
                 if(this.aTimer > 3000 || this.aClicked)
@@ -75,7 +69,7 @@ class IntroScene extends Scene
                     this.aStatus = IntroStatus.FadeOut;
                 }
             }break;
-            case IntroStatus.FadeOut:
+            case EIntroStatus.FadeOut:
             {
                 this.aAlpha = 1 - this.aTimer / 3000;
                 if(this.aTimer > 3000)
@@ -119,10 +113,8 @@ class IntroScene extends Scene
     
     mOnMouseMoveEventHandler(pEvent)
     {
-        //super.mOnMouseMoveEventHandler(pEvent);
         this.aMouse = pEvent;
     }
 }
-export {IntroStatus};
 export {IntroScene};
 export default {IntroScene};

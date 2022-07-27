@@ -189,3 +189,5 @@ export const ETileSheetIndex = Object.freeze
 		}		
 	}
 );
+
+export default {ETileSheetIndex};

@@ -28,3 +28,5 @@ export class Automaton
 		this.aState.mReset();
 	}
 }
+
+export default |

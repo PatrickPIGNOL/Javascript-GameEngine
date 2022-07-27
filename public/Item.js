@@ -1,108 +1,6 @@
 import {MouseFocusable} from "./MouseFocusable.js"
 import {Loader} from "./Loader.js"
-import {EImage} from "./Loader.js"
-
-export const EItemType = Object.freeze
-(
-	{
-		Nothing:
-		{
-			ID: 63,
-			X: 0,
-			Y: 26,
-			Width: 32,
-			Height: 32
-		},
-		TopWall: 
-		{
-			ID: 421,
-			X: 19,
-			Y: 6,
-			Width: 32,
-			Height: 32
-		},
-		Wall: 
-		{
-			ID: 493,
-			X: 13,
-			Y: 21,
-			Width: 32,
-			Height: 32
-		},
-		Floor: 
-		{
-			ID: 192,
-			X: 23,
-			Y: 7,
-			Width: 32,
-			Height: 32
-		},
-		StartPoint:
-		{
-			ID: 13,
-			X: 0,
-			Y: 4,
-			Width: 64,
-			Height: 64
-		},
-		Stairs:
-		{
-			ID: 13,
-			X: 0,
-			Y: 0,
-			Width: 64,
-			Height: 64
-		},
-		Coin:
-		{
-			ID: 3,
-			X: 16,
-			Y: 2,
-			Width: 32,
-			Height: 32
-		},
-		Chest:
-		{
-			ID: 4,
-			X: 4,
-			Y: 0,
-			Width: 64,
-			Height: 64
-		},
-		Enemy:
-		{
-			ID: 2,
-			X: 2,
-			Y: 0,
-			Width: 64,
-			Height: 64
-		},
-		Tank:
-		{
-			ID: 2,
-			X: 2,
-			Y: 0,
-			Width: 64,
-			Height: 64
-		},
-		Web:
-		{
-			ID: 1,
-			X: 1,
-			Y: 0,
-			Width: 64,
-			Height: 64
-		},
-		Heart:
-		{
-			ID: 10,
-			X: 10,
-			Y: 0,
-			Width: 64,
-			Height: 64
-		}
-	}
-);
+import {EImages} from "./EImages.js"
 
 export class Item extends MouseFocusable
 {
@@ -176,11 +74,11 @@ export class Item extends MouseFocusable
 		{
 			case EItemType.Stairs:
 			{
-				pGraphicContext.drawImage(Loader.Images[EImage.SpriteSheet.Index], this.aType.X * this.aType.Width, this.aType.Y * this.aType.Height, this.aType.Width, this.aType.Height, this.aParent.AbsoluteX + this.X * 32, this.aParent.AbsoluteY + this.Y * 32, 32, 32);
+				pGraphicContext.drawImage(Loader.Images[EImages.SpriteSheet.Index], this.aType.X * this.aType.Width, this.aType.Y * this.aType.Height, this.aType.Width, this.aType.Height, this.aParent.AbsoluteX + this.X * 32, this.aParent.AbsoluteY + this.Y * 32, 32, 32);
 			}break;
 			default:
 			{
-				pGraphicContext.drawImage(Loader.Images[EImage.SpriteSheet.Index], this.aType.X * this.aType.Width, this.aType.Y * this.aType.Height, this.aType.Width, this.aType.Height, this.aParent.AbsoluteX + this.X * 32, this.aParent.AbsoluteY + this.Y * 32, 32, 32);
+				pGraphicContext.drawImage(Loader.Images[EImages.SpriteSheet.Index], this.aType.X * this.aType.Width, this.aType.Y * this.aType.Height, this.aType.Width, this.aType.Height, this.aParent.AbsoluteX + this.X * 32, this.aParent.AbsoluteY + this.Y * 32, 32, 32);
 				pGraphicContext.fillStyle = "#FFFFFF";
 				pGraphicContext.font = '16px serif';
 				let vTextMetrics = pGraphicContext.measureText(this.aAmount);

@@ -1,4 +1,4 @@
-class EventProvider
+export class EventProvider
 {
     constructor()
     {
@@ -1329,5 +1329,4 @@ class EventProvider
 	}
 }
 
-export {EventProvider};
 export default {EventProvider};
